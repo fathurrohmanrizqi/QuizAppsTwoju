@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,4 +71,6 @@ dependencies {
     implementation (libs.material.v1110)
     implementation (libs.firebase.auth)
     implementation(libs.firebase.bom)
+    implementation(libs.exoPlayer)
+    implementation(libs.exoUi)
 }
