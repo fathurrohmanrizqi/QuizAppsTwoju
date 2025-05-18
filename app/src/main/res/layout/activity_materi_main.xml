@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MateriMainActivity">
+    android:orientation="vertical">
 
-    <androidx.media3.ui.PlayerView
-        android:id="@+id/playerView"
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youTubePlayerView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
-        android:layout_gravity="center"/>
+        android:layout_marginBottom="8dp" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/txtPenjelasan"
             android:layout_width="match_parent"
@@ -25,6 +22,5 @@
             android:textSize="16sp"
             android:padding="16dp"/>
     </ScrollView>
-
 
 </LinearLayout>

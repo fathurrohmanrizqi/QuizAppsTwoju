@@ -1,43 +1,37 @@
 package com.fathurrohman.piquizapps
 
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.common.MediaItem
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class MateriMainActivity : AppCompatActivity() {
-
-    private lateinit var playerView: PlayerView
-    private lateinit var txtPenjelasan: TextView
-    private var player: ExoPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_materi_main)
 
-        playerView = findViewById(R.id.playerView)
-        txtPenjelasan = findViewById(R.id.txtPenjelasan)
+        val youTubePlayerView = findViewById<YouTubePlayerView>(R.id.youTubePlayerView)
+        val txtPenjelasan = findViewById<TextView>(R.id.txtPenjelasan)
 
-        val videoUrl = intent.getStringExtra("videoUrl") ?: ""
-        val penjelasan = intent.getStringExtra("penjelasan") ?: ""
+        lifecycle.addObserver(youTubePlayerView)
 
-        txtPenjelasan.text = penjelasan
+        // ID video YouTube yang ingin diputar
+        val videoId = "bHQJWK3wOjo"
+//        val videoId = getYoutubeVideoId(videoUrl)
 
-        player = ExoPlayer.Builder(this).build().also { exoPlayer ->
-            playerView.player = exoPlayer
-            val mediaItem = MediaItem.fromUri(Uri.parse(videoUrl))
-            exoPlayer.setMediaItem(mediaItem)
-            exoPlayer.prepare()
-            exoPlayer.play()
-        }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        player?.release()
-        player = null
+        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                Log.d("YouTube", "Player is ready")
+                youTubePlayer.loadVideo(videoId, 0f)
+            }
+        })
+
+        // Tampilkan penjelasan materi
+        txtPenjelasan.text = "Penjelasan materi terkait video."
     }
 }

@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PIQuizApps"
+        android:hardwareAccelerated="true"
         tools:targetApi="31">
         <activity
             android:name=".MateriMainActivity"
@@ -31,7 +32,8 @@
             android:exported="false" />
         <activity
             android:name=".MateriActivity"
-            android:exported="false" /> <!-- <activity -->
+            android:exported="false" />
+        <!-- <activity -->
         <!-- android:name=".HomeActivity" -->
         <!-- android:exported="false" /> -->
         <activity
