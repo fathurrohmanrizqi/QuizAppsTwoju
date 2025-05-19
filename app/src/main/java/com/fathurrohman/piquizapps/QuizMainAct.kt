@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.fathurrohman.piquizapps.databinding.ActivityQuizBinding
 import com.fathurrohman.piquizapps.databinding.ActivityQuizMainBinding
 import com.fathurrohman.piquizapps.databinding.ScoreDialogBinding
+import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.log
 
 class QuizMainAct : AppCompatActivity(),View.OnClickListener{
@@ -120,6 +121,7 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
             }
             scoreSubtitle.text = "$score out of $totalQuestions are correct"
             finishBtn.setOnClickListener {
+                saveResultToFirestore(score, totalQuestions, percentage)
                 finish()
             }
         }
@@ -129,5 +131,29 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
             .setCancelable(false)
             .show()
 
+    }
+
+    private fun saveResultToFirestore(score: Int, totalQuestions: Int, percentage: Int) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            val quizResult = hashMapOf(
+                "userId" to user.uid,
+                "score" to score,
+                "totalQuestions" to totalQuestions,
+                "percentage" to percentage,
+                "timestamp" to System.currentTimeMillis()
+            )
+            db.collection("quiz_results")
+                .add(quizResult)
+                .addOnSuccessListener {
+                    android.util.Log.d("QuizMainAct", "Quiz result saved for user: ${user.uid}")
+                }
+                .addOnFailureListener { e ->
+                    android.util.Log.e("QuizMainAct", "Error saving quiz result", e)
+                }
+        } else {
+            android.util.Log.e("QuizMainAct", "User not logged in")
+        }
     }
 }
