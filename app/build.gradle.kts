@@ -73,7 +73,6 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.exoPlayer)
     implementation(libs.exoUi)
-    implementation(libs.youtubeplayer.core)
-    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.0.1")
 
 }

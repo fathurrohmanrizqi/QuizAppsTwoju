@@ -15,9 +15,11 @@
         android:theme="@style/Theme.PIQuizApps"
         android:hardwareAccelerated="true"
         tools:targetApi="31">
-        <activity
-            android:name=".MateriMainActivity"
-            android:exported="false" />
+        <activity android:name=".MateriMainActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

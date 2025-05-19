@@ -24,7 +24,6 @@ googleGmsGoogleServices = "4.4.2"
 firebaseFirestore = "25.1.4"
 firebaseStorage = "21.0.1"
 exo = "1.3.1"
-youtubeplayer = "12.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -57,7 +56,6 @@ firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 exoPlayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "exo" }
 exoUi = { group = "androidx.media3", name = "media3-ui", version.ref = "exo" }
-youtubeplayer-core = { module = "com.pierfrancescosoffritti.androidyoutubeplayer:core", version.ref = "youtubeplayer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

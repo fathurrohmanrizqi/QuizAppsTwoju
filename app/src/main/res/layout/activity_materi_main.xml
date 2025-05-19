@@ -1,26 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-        android:id="@+id/youTubePlayerView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp" />
+    <!-- Background layout -->
+    <include layout="@layout/background" />
 
-    <ScrollView
+    <!-- Konten utama dibungkus dalam LinearLayout -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txtPenjelasan"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            app:tint="@color/white"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="2dp"
+            android:layout_margin="18dp" />
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:padding="16dp"/>
-    </ScrollView>
+            android:layout_marginBottom="8dp">
 
-</LinearLayout>
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                android:id="@+id/youTubePlayerView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <ImageButton
+                android:id="@+id/btnRewind"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="32dp"
+                android:src="@drawable/ic_rewind"
+                android:contentDescription="Rewind 5 seconds" />
+
+            <ImageButton
+                android:id="@+id/btnForward"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_forward"
+                android:contentDescription="Forward 5 seconds" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_margin="16dp">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtPenjelasan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:padding="16dp" />
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
