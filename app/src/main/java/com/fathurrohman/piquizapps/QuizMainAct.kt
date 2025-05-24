@@ -28,8 +28,10 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
     lateinit var binding:ActivityQuizMainBinding
 
     var currentQuestionIndex = 0;
-    var selectedAnswer = ""
+    var selectedAnswer = "";
     var score = 0;
+
+    val userAnswers = mutableListOf<Map<String, Any>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,19 +90,35 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
             btn2.setBackgroundColor(getColor(R.color.cream))
             btn3.setBackgroundColor(getColor(R.color.cream))
         }
-
         val clickedBtn = view as Button
-        if(clickedBtn.id==R.id.next_btn){
-            //next button is clicked
-            if(selectedAnswer == questionModelList[currentQuestionIndex].correct){
+
+        // Jika tombol NEXT ditekan
+        if (clickedBtn.id == R.id.next_btn) {
+            val currentQuestion = questionModelList[currentQuestionIndex]
+            val isCorrect = selectedAnswer == currentQuestion.correct
+//            val isOption =
+            if (isCorrect) {
                 score++
-                Log.i("Score of Quiz", score.toString())
             }
+
+            // Simpan jawaban ke list
+            val answerRecord = mapOf(
+                "question" to currentQuestion.question,
+                "selectedAnswer" to selectedAnswer,
+                "correctAnswer" to currentQuestion.correct,
+                "isCorrect" to isCorrect,
+//                "option" to
+            )
+            userAnswers.add(answerRecord)
+
+            // Reset selectedAnswer untuk soal berikutnya
+            selectedAnswer = ""
             currentQuestionIndex++
             loadQuestions()
-        }else{
+        } else {
+            // Set jawaban yang dipilih dan warnai tombolnya
             selectedAnswer = clickedBtn.text.toString()
-            clickedBtn.setBackgroundColor(getColor(R.color.blue))
+            clickedBtn.setBackgroundColor(getColor(R.color.blue)) // atau warna yang kamu mau
         }
     }
 
@@ -122,6 +140,7 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
             scoreSubtitle.text = "$score out of $totalQuestions are correct"
             finishBtn.setOnClickListener {
                 saveResultToFirestore(score, totalQuestions, percentage)
+                saveAnswersToFirestore()
                 finish()
             }
         }
@@ -142,18 +161,39 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
                 "score" to score,
                 "totalQuestions" to totalQuestions,
                 "percentage" to percentage,
-                "timestamp" to System.currentTimeMillis()
+                "timestamp" to System.currentTimeMillis(),
+                "answers" to userAnswers
             )
             db.collection("quiz_results")
                 .add(quizResult)
                 .addOnSuccessListener {
-                    android.util.Log.d("QuizMainAct", "Quiz result saved for user: ${user.uid}")
+                    Log.d("QuizMainAct", "Quiz result saved for user: ${user.uid}")
                 }
                 .addOnFailureListener { e ->
-                    android.util.Log.e("QuizMainAct", "Error saving quiz result", e)
+                    Log.e("QuizMainAct", "Error saving quiz result", e)
                 }
         } else {
-            android.util.Log.e("QuizMainAct", "User not logged in")
+            Log.e("QuizMainAct", "User not logged in")
+        }
+    }
+
+    private fun saveAnswersToFirestore() {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            val db = com.google.firebase.firestore.FirebaseFirestore.getInstance()
+            val userId = user.uid
+            for (answer in userAnswers) {
+                val answerWithUser = HashMap(answer)
+                answerWithUser["userId"] = userId
+                db.collection("user_answers")
+                    .add(answerWithUser)
+                    .addOnSuccessListener {
+                        Log.d("QuizMainAct", "Saved answer to Firestore")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("QuizMainAct", "Failed to save answer", e)
+                    }
+            }
         }
     }
 }

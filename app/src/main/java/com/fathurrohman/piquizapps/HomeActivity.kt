@@ -23,7 +23,7 @@ class HomeActivity : AppCompatActivity() {
         // Button binding
         val btnBelajar = findViewById<Button>(R.id.btnBelajar)
         val btnQuiz = findViewById<Button>(R.id.btnQuiz)
-//        val btnInfo = findViewById<Button>(R.id.btnInfo)
+        val btnHistoryQuiz = findViewById<Button>(R.id.btnHistoryQuiz)
 
         // Aksi klik tombol Materi Pembelajaran
         btnBelajar.setOnClickListener {
@@ -37,10 +37,10 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        // Aksi klik tombol Histori Kuis
-//        btnInfo.setOnClickListener {
-//            val intent = Intent(this, HistoriQuizActivity::class.java)
-//            startActivity(intent)
-//        }
+        // Aksi klik tombol Histori Kuis
+        btnHistoryQuiz.setOnClickListener {
+            val intent = Intent(this, HistoryQuizActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

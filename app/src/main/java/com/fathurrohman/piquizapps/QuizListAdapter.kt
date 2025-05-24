@@ -33,7 +33,7 @@ class QuizListAdapter(private val quizModelList : List<QuizModel>) :
             val db = Firebase.firestore
             val listQuestions = mutableListOf<QuestionModel>()
 
-            db.collection("quiz").document(quizDocumentId).collection("question")
+            db.collection("quizzes").document(quizDocumentId).collection("questions")
                 .get()
                 .addOnSuccessListener { result ->
                     Log.d("berhasil ambil data","")

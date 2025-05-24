@@ -37,7 +37,7 @@ class QuizActivity : AppCompatActivity() {
         val db = Firebase.firestore
         binding.progressBar.visibility = View.VISIBLE
 
-        db.collection("quiz")
+        db.collection("quizzes")
 
             .get()
             .addOnSuccessListener { result ->

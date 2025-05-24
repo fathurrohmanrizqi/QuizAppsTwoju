@@ -46,26 +46,11 @@
         app:layout_constraintTop_toBottomOf="@id/txtAppName" />
 
     <Button
-        android:id="@+id/btnQuiz"
+        android:id="@+id/btnBelajar"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:background="@drawable/rounded_btnblue"
-        android:drawableLeft="@drawable/ic_quiz"
-        android:drawablePadding="10dp"
-        android:text="Mulai Kuis"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTagline" />
-
-    <Button
-        android:id="@+id/btnBelajar"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_btnorange"
         android:drawableLeft="@drawable/ic_book"
         android:drawablePadding="10dp"
         android:text="Materi Pembelajaran"
@@ -73,20 +58,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnQuiz" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTagline" />
 
     <Button
-        android:id="@+id/btnInfo"
+        android:id="@+id/btnQuiz"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_btnorange"
+        android:drawableLeft="@drawable/ic_quiz"
+        android:drawablePadding="10dp"
+        android:text="Mulai Quiz"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBelajar" />
+
+    <Button
+        android:id="@+id/btnHistoryQuiz"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_btnyellow"
         android:drawableLeft="@drawable/ic_history"
         android:drawablePadding="10dp"
-        android:text="Histori Kuis"
+        android:text="Histori Quiz"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBelajar" />
+        app:layout_constraintTop_toBottomOf="@+id/btnQuiz" />
 </androidx.constraintlayout.widget.ConstraintLayout>

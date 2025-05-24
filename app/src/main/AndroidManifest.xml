@@ -2,20 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PIQuizApps"
-        android:hardwareAccelerated="true"
         tools:targetApi="31">
-        <activity android:name=".MateriMainActivity"
+        <activity
+            android:name=".HistoryQuizMainAct"
+            android:exported="false" />
+        <activity
+            android:name=".HistoryQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MateriMainActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
@@ -28,16 +35,15 @@
             android:exported="false" />
         <activity
             android:name=".QuizActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".LoginActivity"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".LoginActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".MateriActivity"
             android:exported="false" />
-         <activity
-         android:name=".HomeActivity"
-         android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true"
