@@ -45,6 +45,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtAppName" />
 
+
+
     <Button
         android:id="@+id/btnBelajar"
         android:layout_width="250dp"

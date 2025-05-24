@@ -36,14 +36,13 @@ class HistoryQuizAdapter(
         holder.gradeText.text = item.score.toString()
         holder.timestampText.text = formatDate(item.timestamp)
 
-        // Tambahkan event klik
         holder.itemView.setOnClickListener {
             onItemClick(item)
         }
     }
 
     private fun formatDate(timestamp: Long): String {
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val sdf = SimpleDateFormat("dd MMMM yyyy HH:mm", Locale("id", "ID"))
         return sdf.format(Date(timestamp))
     }
 }

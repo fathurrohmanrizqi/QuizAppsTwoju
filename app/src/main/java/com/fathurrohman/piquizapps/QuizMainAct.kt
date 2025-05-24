@@ -101,13 +101,12 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
                 score++
             }
 
-            // Simpan jawaban ke list
             val answerRecord = mapOf(
                 "question" to currentQuestion.question,
                 "selectedAnswer" to selectedAnswer,
                 "correctAnswer" to currentQuestion.correct,
                 "isCorrect" to isCorrect,
-//                "option" to
+                "options" to currentQuestion.options
             )
             userAnswers.add(answerRecord)
 

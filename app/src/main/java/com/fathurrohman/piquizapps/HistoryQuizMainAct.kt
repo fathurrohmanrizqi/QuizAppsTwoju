@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -18,7 +19,7 @@ class HistoryQuizMainAct : AppCompatActivity() {
     private lateinit var indicatorTextView: TextView
 
     private var currentIndex = 0
-    private val quizHistory = mutableListOf<QuizHistory>()
+    private val quizHistory = mutableListOf<QuizAnswer>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,36 +45,39 @@ class HistoryQuizMainAct : AppCompatActivity() {
             }
         }
 
-         loadUserAnswersFromFirestore()
-        fetchAllQuizzesAndDisplay()
+        val documentId = intent.getStringExtra("documentId") ?: return
+        loadQuizResultByDocumentId(documentId)
     }
 
-    private fun fetchAllQuizzesAndDisplay() {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("quizzes")
-            .limit(1)
+    private fun loadQuizResultByDocumentId(documentId: String) {
+        FirebaseFirestore.getInstance()
+            .collection("quiz_results")
+            .document(documentId)
             .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val questionsData = document["questions"]
-                    Log.d("Firestore", "Isi questions: $questionsData")
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val score = document.getLong("score")?.toInt() ?: 0
+                    val timestamp = document.getLong("timestamp") ?: 0L
+                    val answers = document["answers"] as? List<Map<String, Any>> ?: emptyList()
 
-                    val questions = questionsData as? List<Map<String, Any>> ?: continue
+                    Log.d("Firestore", "Score: $score, Timestamp: $timestamp, Answers: $answers")
+
+                    // Misal kamu ingin tampilkan semua jawaban ke quizHistory:
                     quizHistory.clear()
-
-                    for (q in questions) {
-                        val questionText = q["question"] as? String ?: ""
-                        val correct = q["correct"] as? String ?: ""
-                        val options = q["options"] as? List<String> ?: listOf()
-
-                        Log.d("QuizDebug", "Q: $questionText | Opt: $options | Ans: $correct")
+                    for (answer in answers) {
+                        val question = answer["question"] as? String ?: continue
+                        val correctAnswer = answer["correctAnswer"] as? String ?: ""
+                        val selectedAnswer = answer["selectedAnswer"] as? String ?: ""
+                        val isCorrect = answer["isCorrect"] as? Boolean ?: false
+                        val options = (answer["options"] as? List<*>)?.map { it.toString() } ?: emptyList()
 
                         quizHistory.add(
-                            QuizHistory(
-                                question = questionText,
-                                options = options,
-                                correctAnswer = correct,
-                                selectedAnswer = ""
+                            QuizAnswer(
+                                question = question,
+                                correctAnswer = correctAnswer,
+                                selectedAnswer = selectedAnswer,
+                                isCorrect = isCorrect,
+                                options = options
                             )
                         )
                     }
@@ -82,53 +86,18 @@ class HistoryQuizMainAct : AppCompatActivity() {
                         currentIndex = 0
                         showQuestion()
                     } else {
-                        Toast.makeText(this, "Quiz kosong", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Tidak ada data jawaban", Toast.LENGTH_SHORT).show()
                     }
+
+                } else {
+                    Toast.makeText(this, "Dokumen tidak ditemukan", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
-                Log.e("FirestoreError", "Gagal ambil quiz", e)
-                Toast.makeText(this, "Gagal ambil data quiz", Toast.LENGTH_SHORT).show()
+                Log.e("Firestore", "Gagal mengambil dokumen", e)
             }
     }
 
-
-    private fun loadUserAnswersFromFirestore() {
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            FirebaseFirestore.getInstance()
-                .collection("user_answers")
-                .whereEqualTo("userId", user.uid)
-                .get()
-                .addOnSuccessListener { documents ->
-                    for (doc in documents) {
-                        val question = doc.getString("question") ?: continue
-                        val correctAnswer = doc.get("correctAnswer")
-                        val selectedAnswer = doc.get("selectedAnswer")
-                        val options = (doc["options"] as? List<*>)?.map { it.toString() } ?: emptyList()
-
-                        quizHistory.add(
-                            QuizHistory(
-                                question = question,
-                                options = options,
-                                correctAnswer = correctAnswer.toString(),
-                                selectedAnswer = selectedAnswer.toString()
-                            )
-                        )
-                    }
-
-                    if (quizHistory.isNotEmpty()) {
-                        showQuestion()
-                    } else {
-                        Toast.makeText(this, "Belum ada data jawaban!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .addOnFailureListener { e ->
-                    Log.e("HistoryQuiz", "Gagal load jawaban", e)
-                    Toast.makeText(this, "Gagal mengambil data", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
 
     private fun showQuestion() {
         val currentQuiz = quizHistory[currentIndex]
@@ -140,27 +109,32 @@ class HistoryQuizMainAct : AppCompatActivity() {
             val optionText = currentQuiz.options.getOrNull(i) ?: "-"
             btn.text = optionText
 
-            // Reset warna default
-            btn.setBackgroundColor(getColor(R.color.cream))
+            // Reset to default
+            btn.setBackgroundColor(ContextCompat.getColor(this, R.color.cream))
             btn.setTextColor(Color.BLACK)
 
-            // Highlight berdasarkan jawaban
-            if (optionText == currentQuiz.selectedAnswer && optionText != currentQuiz.correctAnswer) {
-                btn.setBackgroundColor(Color.RED) // Salah dipilih user
-                btn.setTextColor(Color.WHITE)
-                Log.d("lah ga kebaca","")
-            } else if (optionText == currentQuiz.correctAnswer) {
-                btn.setBackgroundColor(getColor(R.color.blue)) // Jawaban benar
-                btn.setTextColor(Color.WHITE)
-                Log.d("lah ga ini juga ga kebaca","")
+            when {
+                optionText == currentQuiz.correctAnswer && optionText == currentQuiz.selectedAnswer -> {
+                    btn.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
+                    btn.setTextColor(Color.WHITE)
+                }
+                optionText == currentQuiz.correctAnswer -> {
+                    btn.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
+                    btn.setTextColor(Color.WHITE)
+                }
+                optionText == currentQuiz.selectedAnswer -> {
+                    btn.setBackgroundColor(Color.RED)
+                    btn.setTextColor(Color.WHITE)
+                }
             }
         }
     }
 
-    data class QuizHistory(
-        val question: String,
-        val options: List<String>,
+    data class QuizAnswer(
         val correctAnswer: String,
-        val selectedAnswer: String
+        val isCorrect: Boolean,
+        val options: List<String>,
+        val question: String,
+        val selectedAnswer: String,
     )
 }

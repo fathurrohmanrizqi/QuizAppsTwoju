@@ -29,6 +29,7 @@ class HistoryQuizActivity : AppCompatActivity() {
 
         adapter = HistoryQuizAdapter(quizResultList) { selectedQuiz ->
             val intent = Intent(this, HistoryQuizMainAct::class.java)
+            intent.putExtra("documentId", selectedQuiz.documentId)
             intent.putExtra("title", selectedQuiz.title)
             intent.putExtra("score", selectedQuiz.score)
             intent.putExtra("timestamp", selectedQuiz.timestamp)
@@ -52,11 +53,13 @@ class HistoryQuizActivity : AppCompatActivity() {
                 .addOnSuccessListener { result ->
                     quizResultList.clear()
                     for (document in result) {
+                        val documentId = document.id // Inilah cara yang benar untuk mengambil ID dari setiap dokumen
                         val title = "Quiz ${quizResultList.size + 1}"
                         val score = (document["score"] as? Long)?.toInt() ?: 0
                         val timestamp = document["timestamp"] as? Long ?: 0L
-                        quizResultList.add(QuizResult(title, score, timestamp))
+                        quizResultList.add(QuizResult(documentId, title, score, timestamp))
                     }
+
                     adapter.notifyDataSetChanged()
                     progressBar.visibility = View.GONE
                 }
