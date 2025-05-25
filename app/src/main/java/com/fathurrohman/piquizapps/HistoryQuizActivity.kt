@@ -31,7 +31,7 @@ class HistoryQuizActivity : AppCompatActivity() {
             val intent = Intent(this, HistoryQuizMainAct::class.java)
             intent.putExtra("documentId", selectedQuiz.documentId)
             intent.putExtra("title", selectedQuiz.title)
-            intent.putExtra("score", selectedQuiz.score)
+            intent.putExtra("score", selectedQuiz.percentage)
             intent.putExtra("timestamp", selectedQuiz.timestamp)
             startActivity(intent)
         }
@@ -54,10 +54,10 @@ class HistoryQuizActivity : AppCompatActivity() {
                     quizResultList.clear()
                     for (document in result) {
                         val documentId = document.id // Inilah cara yang benar untuk mengambil ID dari setiap dokumen
-                        val title = "Quiz ${quizResultList.size + 1}"
-                        val score = (document["score"] as? Long)?.toInt() ?: 0
+                        val title = document.getString("title") ?: "Untitled Quiz"
+                        val percentage = (document["percentage"] as? Long)?.toInt() ?: 0
                         val timestamp = document["timestamp"] as? Long ?: 0L
-                        quizResultList.add(QuizResult(documentId, title, score, timestamp))
+                        quizResultList.add(QuizResult(documentId, title, percentage, timestamp))
                     }
 
                     adapter.notifyDataSetChanged()

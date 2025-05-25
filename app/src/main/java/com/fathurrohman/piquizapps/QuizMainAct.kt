@@ -25,6 +25,8 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
         var time : String = ""
     }
 
+    private var quizTitle: String = ""
+
     lateinit var binding:ActivityQuizMainBinding
 
     var currentQuestionIndex = 0;
@@ -37,6 +39,7 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
         super.onCreate(savedInstanceState)
         binding = ActivityQuizMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        quizTitle = intent.getStringExtra("QUIZ_TITLE") ?: "Untitled Quiz"
         binding.apply {
             btn0.setOnClickListener(this@QuizMainAct)
             btn1.setOnClickListener(this@QuizMainAct)
@@ -161,6 +164,7 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
                 "totalQuestions" to totalQuestions,
                 "percentage" to percentage,
                 "timestamp" to System.currentTimeMillis(),
+                "title" to quizTitle,
                 "answers" to userAnswers
             )
             db.collection("quiz_results")

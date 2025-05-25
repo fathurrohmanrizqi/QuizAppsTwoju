@@ -33,7 +33,13 @@ class HistoryQuizAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.titleText.text = item.title
-        holder.gradeText.text = item.score.toString()
+        val percentage = item.percentage
+        val formattedPercentage = if (percentage == 100) {
+            String.format("%03d", percentage)
+        } else {
+            percentage.toString()
+        }
+        holder.gradeText.text = "$formattedPercentage"
         holder.timestampText.text = formatDate(item.timestamp)
 
         holder.itemView.setOnClickListener {
