@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ class HistoryQuizActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_quiz)
 
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
         recyclerView = findViewById(R.id.recycler_view)
         progressBar = findViewById(R.id.progress_bar)
 
@@ -35,6 +37,11 @@ class HistoryQuizActivity : AppCompatActivity() {
             intent.putExtra("timestamp", selectedQuiz.timestamp)
             startActivity(intent)
         }
+
+        btnBack.setOnClickListener{
+            finish()
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 

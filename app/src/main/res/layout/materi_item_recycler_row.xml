@@ -22,8 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/materi_title_text"
-                tools:text="Tittle"
-                android:textSize="28sp"
+                tools:text="Title"
+                android:textAllCaps="true"
+                android:textSize="18dp"
                 android:textStyle="bold"/>
         </LinearLayout>
         <LinearLayout

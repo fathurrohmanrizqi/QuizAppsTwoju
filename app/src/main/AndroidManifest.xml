@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PIQuizApps"
         tools:targetApi="31">
+<!--        <activity-->
+<!--            android:name=".SplashScreenAct"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".HistoryQuizMainAct"
             android:exported="false" />
@@ -35,9 +38,10 @@
             android:exported="false" />
         <activity
             android:name=".QuizActivity"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".LoginActivity" -->
-        <!-- android:exported="false" /> -->
+            android:exported="false" />
+         <activity
+         android:name=".LoginActivity"
+         android:exported="false" />
         <activity
             android:name=".MateriActivity"
             android:exported="false" />
@@ -45,7 +49,7 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashScreenAct"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PIQuizApps">

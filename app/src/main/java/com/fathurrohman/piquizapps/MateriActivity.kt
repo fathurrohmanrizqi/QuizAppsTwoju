@@ -3,6 +3,7 @@ package com.fathurrohman.piquizapps
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ class MateriActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_materi)
 
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
         recyclerView = findViewById(R.id.recycler_view)
         progressBar = findViewById(R.id.progress_bar)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -31,6 +33,10 @@ class MateriActivity : AppCompatActivity() {
                 putExtra("penjelasan", materi.penjelasan)
             }
             startActivity(intent)
+        }
+
+        btnBack.setOnClickListener {
+            finish()
         }
 
         recyclerView.adapter = materiAdapter

@@ -34,10 +34,12 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
     var score = 0;
 
     val userAnswers = mutableListOf<Map<String, Any>>()
+    val userSelectedAnswers = mutableListOf<String?>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQuizMainBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         quizTitle = intent.getStringExtra("QUIZ_TITLE") ?: "Untitled Quiz"
         binding.apply {
@@ -46,6 +48,11 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
             btn2.setOnClickListener(this@QuizMainAct)
             btn3.setOnClickListener(this@QuizMainAct)
             nextBtn.setOnClickListener(this@QuizMainAct)
+            prevBtn.setOnClickListener(this@QuizMainAct)
+        }
+        userSelectedAnswers.clear()
+        repeat(questionModelList.size) {
+            userSelectedAnswers.add(null)
         }
         loadQuestions()
         startTimer()
@@ -70,6 +77,8 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
 
     private fun loadQuestions(){
         selectedAnswer = ""
+        val prevAnswer = userSelectedAnswers[currentQuestionIndex]
+        selectedAnswer = prevAnswer ?: ""
         if(currentQuestionIndex == questionModelList.size){
             finishQuiz()
             return
@@ -84,44 +93,69 @@ class QuizMainAct : AppCompatActivity(),View.OnClickListener{
             btn2.text = questionModelList[currentQuestionIndex].options[2]
             btn3.text = questionModelList[currentQuestionIndex].options[3]
         }
+        val optionButtons = listOf(binding.btn0, binding.btn1, binding.btn2, binding.btn3)
+        optionButtons.forEach { btn ->
+            if (btn.text.toString() == selectedAnswer) {
+                btn.setBackgroundColor(getColor(R.color.blue)) // warna terpilih
+            } else {
+                btn.setBackgroundColor(getColor(R.color.cream)) // default
+            }
+        }
     }
 
     override fun onClick(view: View?) {
-        binding.apply {
-            btn0.setBackgroundColor(getColor(R.color.cream))
-            btn1.setBackgroundColor(getColor(R.color.cream))
-            btn2.setBackgroundColor(getColor(R.color.cream))
-            btn3.setBackgroundColor(getColor(R.color.cream))
-        }
         val clickedBtn = view as Button
 
-        // Jika tombol NEXT ditekan
-        if (clickedBtn.id == R.id.next_btn) {
-            val currentQuestion = questionModelList[currentQuestionIndex]
-            val isCorrect = selectedAnswer == currentQuestion.correct
-//            val isOption =
-            if (isCorrect) {
-                score++
+        when (clickedBtn.id) {
+            R.id.next_btn -> {
+                val currentQuestion = questionModelList[currentQuestionIndex]
+                userSelectedAnswers[currentQuestionIndex] = selectedAnswer
+                val isCorrect = selectedAnswer == currentQuestion.correct
+                if (isCorrect) {
+                    score++
+                }
+
+                val answerRecord = mapOf(
+                    "question" to currentQuestion.question,
+                    "selectedAnswer" to selectedAnswer,
+                    "correctAnswer" to currentQuestion.correct,
+                    "isCorrect" to isCorrect,
+                    "options" to currentQuestion.options
+                )
+                userAnswers.add(answerRecord)
+
+                selectedAnswer = ""
+                currentQuestionIndex++
+
+                if (currentQuestionIndex == questionModelList.size) {
+                    finishQuiz()
+                } else {
+                    loadQuestions()
+                }
             }
 
-            val answerRecord = mapOf(
-                "question" to currentQuestion.question,
-                "selectedAnswer" to selectedAnswer,
-                "correctAnswer" to currentQuestion.correct,
-                "isCorrect" to isCorrect,
-                "options" to currentQuestion.options
-            )
-            userAnswers.add(answerRecord)
+            R.id.prev_btn -> {
+                if (currentQuestionIndex > 0) {
+                    userSelectedAnswers[currentQuestionIndex] = selectedAnswer
+                    currentQuestionIndex--
+                    selectedAnswer = userSelectedAnswers[currentQuestionIndex] ?: ""
+                    loadQuestions()
+                }
+            }
 
-            // Reset selectedAnswer untuk soal berikutnya
-            selectedAnswer = ""
-            currentQuestionIndex++
-            loadQuestions()
-        } else {
-            // Set jawaban yang dipilih dan warnai tombolnya
-            selectedAnswer = clickedBtn.text.toString()
-            clickedBtn.setBackgroundColor(getColor(R.color.blue)) // atau warna yang kamu mau
+            else -> {
+                selectedAnswer = clickedBtn.text.toString()
+                highlightSelectedButton(clickedBtn)
+            }
         }
+    }
+
+    private fun highlightSelectedButton(selectedButton: Button) {
+        val buttons = listOf(binding.btn0, binding.btn1, binding.btn2, binding.btn3)
+        for (btn in buttons) {
+            btn.setBackgroundColor(getColor(R.color.cream)) // Reset semua
+        }
+        selectedButton.setBackgroundColor(getColor(R.color.blue)) // Tandai yang dipilih
     }
 
     private fun finishQuiz(){

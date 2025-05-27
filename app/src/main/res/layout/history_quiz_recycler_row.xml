@@ -14,19 +14,25 @@
         android:padding="16dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="271dp"
+            android:layout_height="49dp"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/linearLayout"
             android:orientation="vertical">
+
             <TextView
+                android:id="@+id/materi_title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/materi_title_text"
-                tools:text="Tittle"
-                android:textSize="28sp"
-                android:textStyle="bold"/>
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                tools:text="Title" />
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -35,22 +41,21 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/grades"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:id="@+id/grades"
-                tools:text="90"
-                android:textSize="25sp"
+                android:textSize="18dp"
                 android:textStyle="bold"
-                app:tint="@color/blue" />
+                app:tint="@color/blue"
+                tools:text="90" />
 
             <TextView
+                android:id="@+id/timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
-                android:id="@+id/timestamp"
                 android:padding="3dp"
-                tools:text="22-05-2025"
-                android:textSize="15sp"
-                />
+                android:textSize="14dp"
+                tools:text="22-05-2025" />
         </LinearLayout>
 
     </RelativeLayout>

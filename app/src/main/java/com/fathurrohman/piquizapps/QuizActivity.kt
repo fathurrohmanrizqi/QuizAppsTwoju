@@ -3,6 +3,7 @@ package com.fathurrohman.piquizapps
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -23,8 +24,13 @@ class QuizActivity : AppCompatActivity() {
         binding = ActivityQuizBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
         quizModelList = mutableListOf()
         getDataFromFirebase()
+
+        btnBack.setOnClickListener{
+            finish()
+        }
     }
 
     private fun setupRecyclerView(){

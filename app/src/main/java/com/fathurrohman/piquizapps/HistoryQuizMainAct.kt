@@ -16,6 +16,7 @@ class HistoryQuizMainAct : AppCompatActivity() {
     private lateinit var questionTextView: TextView
     private lateinit var btnOptions: List<Button>
     private lateinit var nextButton: Button
+    private lateinit var prevButton: Button
     private lateinit var indicatorTextView: TextView
 
     private var currentIndex = 0
@@ -34,6 +35,7 @@ class HistoryQuizMainAct : AppCompatActivity() {
             findViewById(R.id.btn3)
         )
         nextButton = findViewById(R.id.next_btn)
+        prevButton = findViewById(R.id.prev_btn)
 
         nextButton.setOnClickListener {
             if (currentIndex < quizHistory.size - 1) {
@@ -42,6 +44,15 @@ class HistoryQuizMainAct : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Selesai!", Toast.LENGTH_SHORT).show()
                 finish()
+            }
+        }
+
+        prevButton.setOnClickListener {
+            if (currentIndex > 0) {
+                currentIndex--
+                showQuestion()
+            } else {
+                Toast.makeText(this, "Ini adalah soal pertama.", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -119,7 +130,7 @@ class HistoryQuizMainAct : AppCompatActivity() {
                     btn.setTextColor(Color.WHITE)
                 }
                 optionText == currentQuiz.correctAnswer -> {
-                    btn.setBackgroundColor(ContextCompat.getColor(this, R.color.blue))
+                    btn.setBackgroundColor(ContextCompat.getColor(this, R.color.green))
                     btn.setTextColor(Color.WHITE)
                 }
                 optionText == currentQuiz.selectedAnswer -> {
